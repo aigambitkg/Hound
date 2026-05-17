@@ -69,10 +69,87 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
     // ---------- 3. Asset Helpers ----------
     const textureLoader = new THREE.TextureLoader();
 
+    // Sammelt alle Video-Elemente, damit sie beim Unmount sauber gestoppt werden
+    const videoElements: HTMLVideoElement[] = [];
+
+    /**
+     * Analysiert die Alpha-Channel-Daten einer geladenen Textur und liefert
+     * die Bounding-Box der nicht-transparenten Pixel zurueck.
+     * Bilder mit grossem transparentem Rand (z.B. Logos in 1024x1024-Canvas)
+     * werden so automatisch "gekroppt" - das verhindert visuelles Stretching.
+     */
+    const detectVisibleBBox = (
+      img: HTMLImageElement | HTMLCanvasElement,
+    ): { x: number; y: number; w: number; h: number } | null => {
+      const w = img.width;
+      const h = img.height;
+      if (!w || !h) return null;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return null;
+      ctx.drawImage(img, 0, 0);
+
+      let data: Uint8ClampedArray;
+      try {
+        data = ctx.getImageData(0, 0, w, h).data;
+      } catch {
+        // CORS-tainted canvas - kein Crop moeglich
+        return null;
+      }
+
+      let minX = w;
+      let minY = h;
+      let maxX = -1;
+      let maxY = -1;
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          if (data[(y * w + x) * 4 + 3] > 8) {
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x > maxX) maxX = x;
+            if (y > maxY) maxY = y;
+          }
+        }
+      }
+      if (maxX < 0 || maxY < 0) return null;
+      return { x: minX, y: minY, w: maxX - minX + 1, h: maxY - minY + 1 };
+    };
+
+    /**
+     * Skaliert ein Mesh "contain"-maessig in seine maxScale-Box, basierend
+     * auf einem gegebenen Bildverhaeltnis.
+     */
+    const fitMeshAspect = (
+      mesh: THREE.Mesh,
+      maxScale: [number, number],
+      contentRatio: number,
+    ) => {
+      const boxRatio = maxScale[0] / maxScale[1];
+      if (contentRatio > boxRatio) {
+        // Bild breiter als Box -> Hoehe reduzieren
+        mesh.scale.set(1, boxRatio / contentRatio, 1);
+      } else if (contentRatio < boxRatio) {
+        // Bild hoeher als Box -> Breite reduzieren
+        mesh.scale.set(contentRatio / boxRatio, 1, 1);
+      } else {
+        mesh.scale.set(1, 1, 1);
+      }
+    };
+
+    /**
+     * Erzeugt ein Bild-Mesh mit:
+     * - Aspect-Ratio-erhaltendem "contain"-Fit in die maxScale-Bounding-Box
+     * - Optionalem Auto-Crop des transparenten Randes via UV-Mapping
+     *   (autoCrop: true) - wichtig fuer Logos mit Padding.
+     */
     const createImage = (
       url: string,
       pos: [number, number, number],
-      scale: [number, number],
+      maxScale: [number, number],
+      options: { autoCrop?: boolean } = {},
     ): THREE.Mesh => {
       const material = new THREE.MeshBasicMaterial({
         transparent: true,
@@ -80,13 +157,100 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
         depthWrite: false,
         side: THREE.DoubleSide,
       });
+      const mesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(maxScale[0], maxScale[1]),
+        material,
+      );
+      mesh.position.set(...pos);
+
       textureLoader.load(url, (texture) => {
         texture.colorSpace = THREE.SRGBColorSpace;
         material.map = texture;
+
+        const img = texture.image as HTMLImageElement | HTMLCanvasElement | undefined;
+        if (!img || !img.width || !img.height) {
+          material.needsUpdate = true;
+          return;
+        }
+
+        const fullW = img.width;
+        const fullH = img.height;
+        let contentRatio = fullW / fullH;
+
+        if (options.autoCrop) {
+          const bbox = detectVisibleBBox(img);
+          if (bbox && (bbox.w < fullW * 0.95 || bbox.h < fullH * 0.95)) {
+            // UV-Crop: nur sichtbaren Inhalt auf das Mesh mappen
+            texture.repeat.set(bbox.w / fullW, bbox.h / fullH);
+            // Three.js UV-Origin = unten links, Bild-Origin = oben links -> Y flippen
+            texture.offset.set(bbox.x / fullW, 1 - (bbox.y + bbox.h) / fullH);
+            contentRatio = bbox.w / bbox.h;
+          }
+        }
+
+        fitMeshAspect(mesh, maxScale, contentRatio);
+        texture.needsUpdate = true;
         material.needsUpdate = true;
       });
+
+      return mesh;
+    };
+
+    /**
+     * Erzeugt ein Video-Mesh mit VideoTexture.
+     * - playbackRate steuert die Geschwindigkeit (1 = normal, 0.5 = halbe Geschw.)
+     * - Video wird gemuted geloopt fuer Autoplay-Kompatibilitaet aller Browser
+     * - Aspect-Ratio wird automatisch erhalten sobald Metadaten geladen sind
+     */
+    const createVideo = (
+      url: string,
+      pos: [number, number, number],
+      maxScale: [number, number],
+      playbackRate: number = 1.0,
+    ): THREE.Mesh => {
+      const video = document.createElement('video');
+      video.src = url;
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.crossOrigin = 'anonymous';
+      video.autoplay = true;
+      video.preload = 'auto';
+
+      const applyRate = () => {
+        try {
+          video.playbackRate = playbackRate;
+        } catch {
+          /* ignore */
+        }
+      };
+      applyRate();
+      video.addEventListener('loadedmetadata', () => {
+        applyRate();
+        fitMeshAspect(mesh, maxScale, video.videoWidth / video.videoHeight);
+      });
+      video.addEventListener('play', applyRate);
+      // Autoplay anstossen (manche Browser brauchen es explizit)
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.catch(() => {
+          /* Autoplay blockiert - laeuft nach erster User-Interaktion */
+        });
+      }
+      videoElements.push(video);
+
+      const texture = new THREE.VideoTexture(video);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+
+      const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        side: THREE.DoubleSide,
+        transparent: false,
+      });
       const mesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(scale[0], scale[1]),
+        new THREE.PlaneGeometry(maxScale[0], maxScale[1]),
         material,
       );
       mesh.position.set(...pos);
@@ -122,20 +286,47 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
 
     // ---------- 4. Szenen-Objekte ----------
     // HERO Sektion (Z = -2)
-    const logoMesh = createImage(assetUrl(ASSETS.logoTransparent), [0, 1.5, -2], [7, 3]);
+    // autoCrop entfernt das transparente Padding des Logos (1024x1024 mit
+    // schmalem Text-Inhalt) und mappt nur den sichtbaren Bereich auf das Mesh.
+    // Bounding-Box [4, 4] ist gross genug, dass der gekroppte HOUND-Text in
+    // seinem natuerlichen Verhaeltnis (~5:1) gut lesbar erscheint - ohne
+    // Stretching, ohne Unschaerfe.
+    const logoMesh = createImage(
+      assetUrl(ASSETS.logoTransparent),
+      [0, 1.2, -2],
+      [4, 4],
+      { autoCrop: true },
+    );
     group.add(logoMesh);
 
-    // SEKTION 1: Mandanten (Z = -15) -> Glas-Objekte rechts
+    // SEKTION 1: Mandanten (Z = -15) -> Bild + Glas-Objekte rechts
+    // pferdearzt_stall.png liegt hinter den Glas-Slabs (Hologramm-Effekt)
+    const pferdearztMesh = createImage(
+      assetUrl(ASSETS.pferdearztStall),
+      [4, 0, -16],
+      [5, 5],
+    );
     const slab1 = createGlassSlab([4, 0, -15], [0.1, -0.3, 0.1], [4, 5]);
     const slab2 = createGlassSlab([3, -1.5, -16], [0, -0.1, 0.2], [2.5, 3.5]);
+    group.add(pferdearztMesh);
     group.add(slab1);
     group.add(slab2);
 
-    // SEKTION 2: Talente (Z = -30) -> Jo + Glas links
+    // SEKTION 2: Talente (Z = -30) -> Jo + Glas + Video
+    // Jo bleibt als Maskottchen-Bild, das Video laeuft komplementaer
+    // in der rechten Bildhaelfte (langsamere Geschwindigkeit fuer
+    // einen ruhigen, eleganten Look).
     const joMesh = createImage(assetUrl(ASSETS.jo), [-4, 0, -32], [5, 5]);
     const slab3 = createGlassSlab([-3.5, 0, -30], [0.1, 0.2, -0.1], [6, 6]);
+    const videoMesh = createVideo(
+      assetUrl(ASSETS.talenteVideo),
+      [3.5, 0, -32],
+      [5, 5],
+      0.5, // halbe Geschwindigkeit
+    );
     group.add(joMesh);
     group.add(slab3);
+    group.add(videoMesh);
 
     // SEKTION 3: Call to Action (Z = -45)
     const endMesh = createImage(assetUrl(ASSETS.cta), [0, 1.5, -45], [7, 4]);
@@ -216,10 +407,12 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
       offset: number;
     }> = [
       { obj: logoMesh, speed: 1.5, offset: 0 },
+      { obj: pferdearztMesh, speed: 1.3, offset: 0.5 },
       { obj: slab1, speed: 1.0, offset: 1 },
       { obj: slab2, speed: 1.2, offset: 2 },
       { obj: joMesh, speed: 2.0, offset: 3 },
       { obj: slab3, speed: 1.5, offset: 4 },
+      { obj: videoMesh, speed: 1.7, offset: 3.5 },
       { obj: endMesh, speed: 1.0, offset: 5 },
     ];
 
@@ -313,6 +506,17 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
       if (renderer.domElement.parentNode === container) {
         container.removeChild(renderer.domElement);
       }
+
+      // Video-Elemente stoppen + Quellen freigeben
+      videoElements.forEach((v) => {
+        try {
+          v.pause();
+          v.removeAttribute('src');
+          v.load();
+        } catch {
+          /* ignore */
+        }
+      });
 
       // WebGL Resources freigeben
       pointsGeometry.dispose();
