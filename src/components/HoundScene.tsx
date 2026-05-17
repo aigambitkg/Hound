@@ -257,32 +257,10 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
       return mesh;
     };
 
-    const createGlassSlab = (
-      pos: [number, number, number],
-      rot: [number, number, number],
-      scale: [number, number],
-    ): THREE.Mesh => {
-      const material = new THREE.MeshPhysicalMaterial({
-        color: 0xffffff,
-        transmission: 0.9,
-        opacity: 1,
-        metalness: 0.1,
-        roughness: 0.1,
-        ior: 1.5,
-        thickness: 1.5,
-        specularIntensity: 2,
-        clearcoat: 1,
-        clearcoatRoughness: 0.1,
-        side: THREE.DoubleSide,
-      });
-      const mesh = new THREE.Mesh(
-        new THREE.BoxGeometry(scale[0], scale[1], 0.2),
-        material,
-      );
-      mesh.position.set(...pos);
-      mesh.rotation.set(...rot);
-      return mesh;
-    };
+    // Hinweis: Die frueheren Glas-Slabs wurden entfernt, da leere Glaspaneele
+    // ohne Bildinhalt visuell als "plastische Rechtecke" wirkten. Falls in
+    // Zukunft wieder ein Glas-Effekt benoetigt wird, ist MeshPhysicalMaterial
+    // mit transmission: 0.9 die richtige Wahl.
 
     // ---------- 4. Szenen-Objekte ----------
     // HERO Sektion (Z = -2)
@@ -299,33 +277,39 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
     );
     group.add(logoMesh);
 
-    // SEKTION 1: Mandanten (Z = -15) -> Bild + Glas-Objekte rechts
-    // pferdearzt_stall.png liegt hinter den Glas-Slabs (Hologramm-Effekt)
+    // SEKTION 1: Mandanten (Z = -15) -> Drei Bilder rechts vom Text
+    // Alle Glas-Slabs durch echte Bild-Meshes ersetzt - keine leeren Rechtecke mehr.
+    // pferdearzt_stall.png ist das Hauptbild, vets.png komplementiert kleiner darunter.
     const pferdearztMesh = createImage(
       assetUrl(ASSETS.pferdearztStall),
-      [4, 0, -16],
-      [5, 5],
+      [4, 0.8, -15],
+      [5, 3.2],
     );
-    const slab1 = createGlassSlab([4, 0, -15], [0.1, -0.3, 0.1], [4, 5]);
-    const slab2 = createGlassSlab([3, -1.5, -16], [0, -0.1, 0.2], [2.5, 3.5]);
+    const vetsMesh = createImage(
+      assetUrl(ASSETS.vets),
+      [2.8, -1.8, -16],
+      [3.6, 2],
+    );
     group.add(pferdearztMesh);
-    group.add(slab1);
-    group.add(slab2);
+    group.add(vetsMesh);
 
-    // SEKTION 2: Talente (Z = -30) -> Jo + Glas + Video
-    // Jo bleibt als Maskottchen-Bild, das Video laeuft komplementaer
-    // in der rechten Bildhaelfte (langsamere Geschwindigkeit fuer
-    // einen ruhigen, eleganten Look).
-    const joMesh = createImage(assetUrl(ASSETS.jo), [-4, 0, -32], [5, 5]);
-    const slab3 = createGlassSlab([-3.5, 0, -30], [0.1, 0.2, -0.1], [6, 6]);
+    // SEKTION 2: Talente (Z = -30) -> Jo (Maskottchen) + Praxis-Bild + Video
+    // Jo links, praxis.png als verbindendes Element unten, Video rechts.
+    // Glas-Slab entfernt - die drei Bilder bilden die Komposition.
+    const joMesh = createImage(assetUrl(ASSETS.jo), [-4, 0.5, -32], [4.5, 4.5]);
+    const praxisMesh = createImage(
+      assetUrl(ASSETS.praxis),
+      [0, -2.5, -31],
+      [4, 2.2],
+    );
     const videoMesh = createVideo(
       assetUrl(ASSETS.talenteVideo),
-      [3.5, 0, -32],
-      [5, 5],
+      [3.5, 0.5, -32],
+      [4.5, 3],
       0.5, // halbe Geschwindigkeit
     );
     group.add(joMesh);
-    group.add(slab3);
+    group.add(praxisMesh);
     group.add(videoMesh);
 
     // SEKTION 3: Call to Action (Z = -45)
@@ -408,10 +392,9 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
     }> = [
       { obj: logoMesh, speed: 1.5, offset: 0 },
       { obj: pferdearztMesh, speed: 1.3, offset: 0.5 },
-      { obj: slab1, speed: 1.0, offset: 1 },
-      { obj: slab2, speed: 1.2, offset: 2 },
+      { obj: vetsMesh, speed: 1.6, offset: 1.2 },
       { obj: joMesh, speed: 2.0, offset: 3 },
-      { obj: slab3, speed: 1.5, offset: 4 },
+      { obj: praxisMesh, speed: 1.4, offset: 2.5 },
       { obj: videoMesh, speed: 1.7, offset: 3.5 },
       { obj: endMesh, speed: 1.0, offset: 5 },
     ];

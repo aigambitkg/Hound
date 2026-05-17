@@ -22,6 +22,8 @@ export const ASSETS = {
   logoTransparent: 'hound_logo_transparent1.png',
   jo: 'hound_jo.png',
   pferdearztStall: 'pferdearzt_stall.png',
+  vets: 'vets.png',
+  praxis: 'praxis.png',
   talenteVideo: '0517.mp4',
   cta: 'tierische_werbeszene.png',
 } as const;
