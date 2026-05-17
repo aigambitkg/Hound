@@ -19,7 +19,7 @@ export const assetUrl = (path: string): string => {
  */
 export const ASSETS = {
   logo: 'hound_logo.png',
-  logoTransparent: 'hound_logo_transparent.png',
+  logoTransparent: 'hound_logo_transparent1.png',
   jo: 'hound_jo.png',
-  cta: 'hound_cta.png',
+  cta: 'tierische_werbeszene.png',
 } as const;
