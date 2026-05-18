@@ -70,7 +70,12 @@ export default function App() {
 
       {/* Morphing Kontakt-Overlay */}
       <AnimatePresence>
-        {showContact && <ContactView onClose={() => setShowContact(false)} />}
+        {showContact && (
+          <ContactView
+            onClose={() => setShowContact(false)}
+            onOpenLegal={openLegal}
+          />
+        )}
       </AnimatePresence>
 
       {/* Impressum / Datenschutz Modal */}

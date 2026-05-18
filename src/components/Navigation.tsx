@@ -1,6 +1,8 @@
 import { useEffect, useState, type RefObject } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Calendar } from 'lucide-react';
 import { ASSETS, assetUrl } from '../utils/assets';
+
+const CALENDLY_URL = 'https://calendly.com/kevin-grundmann-ai-gambit/30min';
 
 interface NavigationProps {
   /** Scrollbarer Container, in dem die Sektionen liegen */
@@ -141,6 +143,18 @@ export default function Navigation({ scrollContainerRef }: NavigationProps) {
                   </li>
                 );
               })}
+              {/* Termin buchen - externer Calendly-Link, visuell als Primary-CTA */}
+              <li className="ml-2">
+                <a
+                  href={CALENDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full text-sm bg-[#D4AF37] text-[#2B0A16] font-medium hover:scale-105 transition-transform shadow-[0_4px_20px_rgba(212,175,55,0.3)]"
+                >
+                  <Calendar size={15} />
+                  Termin buchen
+                </a>
+              </li>
             </ul>
 
             {/* Mobile Hamburger */}
@@ -188,6 +202,18 @@ export default function Navigation({ scrollContainerRef }: NavigationProps) {
                   </li>
                 );
               })}
+              <li className="pt-2 mt-2 border-t border-white/10">
+                <a
+                  href={CALENDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-base bg-[#D4AF37] text-[#2B0A16] font-medium"
+                >
+                  <Calendar size={18} />
+                  Termin buchen
+                </a>
+              </li>
             </ul>
           </div>
         </div>

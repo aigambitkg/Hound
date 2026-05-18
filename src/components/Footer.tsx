@@ -40,18 +40,20 @@ export default function Footer({ onOpenLegal }: FooterProps) {
               <li className="flex items-start gap-3">
                 <Mail size={16} className="mt-0.5 text-[#D4AF37] flex-shrink-0" />
                 <a
-                  href="mailto:kontakt@hound-personal.de"
-                  className="hover:text-[#D4AF37] transition-colors"
+                  href="mailto:kevin.grundmann@ai-gambit.com"
+                  className="hover:text-[#D4AF37] transition-colors break-all"
                 >
-                  kontakt@hound-personal.de
+                  kevin.grundmann@ai-gambit.com
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin size={16} className="mt-0.5 text-[#D4AF37] flex-shrink-0" />
                 <span>
-                  Bad Vilbel &middot; Deutschland
+                  c/o AI Gambit
                   <br />
-                  c/o Namuh Talent Ecosystems &middot; c/o AI Gambit
+                  Fraunhoferstrasse 35
+                  <br />
+                  61118 Bad Vilbel &middot; Deutschland
                 </span>
               </li>
             </ul>

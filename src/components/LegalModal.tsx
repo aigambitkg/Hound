@@ -71,11 +71,11 @@ function Impressum() {
         <p>
           <strong>Kevin Grundmann</strong>
           <br />
-          c/o Namuh Talent Ecosystems
-          <br />
           c/o AI Gambit
           <br />
-          Bad Vilbel
+          Fraunhoferstrasse 35
+          <br />
+          61118 Bad Vilbel
           <br />
           Deutschland
         </p>
@@ -85,10 +85,10 @@ function Impressum() {
         <p>
           E-Mail:{' '}
           <a
-            href="mailto:kontakt@hound-personal.de"
+            href="mailto:kevin.grundmann@ai-gambit.com"
             className="text-[#2B0A16] underline hover:text-[#D4AF37] transition-colors"
           >
-            kontakt@hound-personal.de
+            kevin.grundmann@ai-gambit.com
           </a>
           <br />
           WhatsApp:{' '}
@@ -107,9 +107,16 @@ function Impressum() {
         <p>
           Kevin Grundmann
           <br />
-          c/o Namuh Talent Ecosystems &middot; c/o AI Gambit
+          c/o AI Gambit &middot; Fraunhoferstrasse 35
           <br />
-          Bad Vilbel, Deutschland
+          61118 Bad Vilbel, Deutschland
+        </p>
+      </Section>
+
+      <Section title="Umsatzsteuer">
+        <p>
+          Hinweis nach § 19 UStG: Es wird keine Umsatzsteuer ausgewiesen, da
+          die Voraussetzungen der Kleinunternehmerregelung erfuellt sind.
         </p>
       </Section>
 
@@ -202,16 +209,16 @@ function Datenschutz() {
         <p>
           <strong>Kevin Grundmann</strong>
           <br />
-          c/o Namuh Talent Ecosystems &middot; c/o AI Gambit
+          c/o AI Gambit &middot; Fraunhoferstrasse 35
           <br />
-          Bad Vilbel, Deutschland
+          61118 Bad Vilbel, Deutschland
           <br />
           E-Mail:{' '}
           <a
-            href="mailto:kontakt@hound-personal.de"
+            href="mailto:kevin.grundmann@ai-gambit.com"
             className="text-[#2B0A16] underline hover:text-[#D4AF37]"
           >
-            kontakt@hound-personal.de
+            kevin.grundmann@ai-gambit.com
           </a>
         </p>
       </Section>
