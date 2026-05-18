@@ -19,35 +19,31 @@ export default function TalenteSection({ onContactClick }: TalenteSectionProps) 
           Deine Karriere.{' '}
           <span className="italic text-[#D4AF37]">Deine Bedingungen.</span>
         </h2>
-        <p className="text-white/85 text-base md:text-lg font-light leading-relaxed mb-8 drop-shadow-md">
-          Du liebst deinen Beruf, suchst aber nach besseren Arbeitszeiten,
-          modernerer Ausstattung oder einem besseren Gehalt? Wir finden die
-          Praxis, die wirklich zu deinem Leben passt.
+        <p className="text-white/85 text-base md:text-lg font-light leading-relaxed mb-7 drop-shadow-md">
+          Bessere Bedingungen, moderne Praxen, fairer Lohn &ndash; wir finden
+          deinen Match.
         </p>
 
-        <ul className="space-y-5 mb-10">
+        <ul className="space-y-4 mb-8">
           <li className="flex gap-4 text-white/90 text-left">
-            <ShieldCheck size={22} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
-            <span className="text-sm md:text-base leading-relaxed drop-shadow-md">
-              <strong className="text-white">100% Kostenlos &amp; Anonym:</strong>{' '}
-              Deine Suche bleibt absolut diskret. Dein aktueller Arbeitgeber
-              erfaehrt von nichts.
+            <ShieldCheck size={20} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
+            <span className="text-sm md:text-base leading-snug">
+              <strong className="text-white">Kostenlos &amp; anonym.</strong>{' '}
+              Dein aktueller Arbeitgeber erfaehrt nichts.
             </span>
           </li>
           <li className="flex gap-4 text-white/90 text-left">
-            <Sparkles size={22} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
-            <span className="text-sm md:text-base leading-relaxed drop-shadow-md">
-              <strong className="text-white">Top-Arbeitgeber im Portfolio:</strong>{' '}
-              Wir vermitteln dich nur an Praxen und Kliniken, die moderne
-              Arbeitsbedingungen und echte Wertschaetzung bieten.
+            <Sparkles size={20} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
+            <span className="text-sm md:text-base leading-snug">
+              <strong className="text-white">Nur Top-Arbeitgeber.</strong>{' '}
+              Wertschaetzung statt Burnout.
             </span>
           </li>
           <li className="flex gap-4 text-white/90 text-left">
-            <Zap size={22} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
-            <span className="text-sm md:text-base leading-relaxed drop-shadow-md">
-              <strong className="text-white">Kein Bewerbungsmarathon:</strong>{' '}
-              Wir pitchen dich direkt bei den Entscheidern. Ein Lebenslauf
-              reicht &ndash; den Rest machen wir.
+            <Zap size={20} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
+            <span className="text-sm md:text-base leading-snug">
+              <strong className="text-white">Kein Bewerbungsmarathon.</strong>{' '}
+              Lebenslauf reicht &mdash; den Rest machen wir.
             </span>
           </li>
         </ul>

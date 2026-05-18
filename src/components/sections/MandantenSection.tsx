@@ -19,34 +19,30 @@ export default function MandantenSection({ onContactClick }: MandantenSectionPro
           Besetzen Sie Ihre offenen Stellen &ndash;{' '}
           <span className="italic text-[#D4AF37]">ohne Stress</span>.
         </h2>
-        <p className="text-white/85 text-base md:text-lg font-light leading-relaxed mb-8 drop-shadow-md">
-          Profitieren Sie von einer Personalberatung, die Ihre Sprache spricht
-          und die Herausforderungen der modernen Tiermedizin versteht.
+        <p className="text-white/85 text-base md:text-lg font-light leading-relaxed mb-7 drop-shadow-md">
+          Personalberatung, die Ihre Sprache spricht.
         </p>
 
-        <ul className="space-y-5 mb-10">
+        <ul className="space-y-4 mb-8">
           <li className="flex gap-4 text-white/90">
-            <Stethoscope size={22} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
-            <span className="text-sm md:text-base leading-relaxed drop-shadow-md">
-              <strong className="text-white">100% Veterinaer-Fokus:</strong> Wir
-              kennen den Markt, die Approbationshuerden und die Ansprueche von
-              Tieraerzten und Fachpersonal.
+            <Stethoscope size={20} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
+            <span className="text-sm md:text-base leading-snug">
+              <strong className="text-white">100% Veterinaer-Fokus.</strong> Wir
+              kennen Markt, Approbation und Anspruch.
             </span>
           </li>
           <li className="flex gap-4 text-white/90">
-            <Radar size={22} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
-            <span className="text-sm md:text-base leading-relaxed drop-shadow-md">
-              <strong className="text-white">Aktive Ansprache (Active Sourcing):</strong>{' '}
-              Wir erreichen auch die Kandidaten, die Wechselbereitschaft zeigen,
-              aber nicht aktiv suchen.
+            <Radar size={20} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
+            <span className="text-sm md:text-base leading-snug">
+              <strong className="text-white">Active Sourcing.</strong> Wir
+              erreichen auch passive Kandidaten.
             </span>
           </li>
           <li className="flex gap-4 text-white/90">
-            <Clock size={22} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
-            <span className="text-sm md:text-base leading-relaxed drop-shadow-md">
-              <strong className="text-white">Zeitersparnis:</strong> Wir
-              uebernehmen das gesamte Pre-Screening. Sie lernen nur Kandidaten
-              kennen, die fachlich und menschlich perfekt zu Ihnen passen.
+            <Clock size={20} className="flex-shrink-0 mt-1 text-[#D4AF37]" />
+            <span className="text-sm md:text-base leading-snug">
+              <strong className="text-white">Zeitersparnis.</strong> Wir
+              uebernehmen das komplette Pre-Screening.
             </span>
           </li>
         </ul>

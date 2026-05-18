@@ -23,7 +23,7 @@ export default function HeroSection({ onContactClick }: HeroSectionProps) {
         className="pointer-events-auto max-w-4xl frosted-panel-soft p-8 md:p-12"
       >
         <p className="text-[#D4AF37] tracking-[0.3em] uppercase text-xs md:text-sm mb-6 font-semibold drop-shadow-md">
-          HOUND &nbsp;|&nbsp; Next-Level Personalberatung fuer die Tiermedizin
+          HOUND &nbsp;|&nbsp; Next-Level Recruiting fuer den tiermedizinischen Bereich
         </p>
         <h1 className="text-white text-4xl md:text-6xl font-serif tracking-tight leading-[1.1] drop-shadow-lg">
           Schluss mit der erfolglosen Suche.
@@ -31,11 +31,9 @@ export default function HeroSection({ onContactClick }: HeroSectionProps) {
           <span className="italic text-[#D4AF37]">Wir finden</span> das Fachpersonal,
           das Ihre Praxis braucht.
         </h1>
-        <p className="text-white/80 mt-8 max-w-2xl mx-auto text-base md:text-lg font-light leading-relaxed drop-shadow-md">
-          HOUND ist die spezialisierte Personalberatung fuer den Veterinaerbereich.
-          Durch datenbasiertes Social Recruiting und ein einzigartiges
-          Branchen-Netzwerk bringen wir Tierkliniken und die besten Talente der
-          Tiermedizin zusammen. Schnell, diskret und treffsicher.
+        <p className="text-white/85 mt-6 max-w-xl mx-auto text-base md:text-lg font-light leading-relaxed drop-shadow-md">
+          Spezialisiertes Recruiting fuer den Veterinaerbereich.
+          Datenbasiert. Diskret. Treffsicher.
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">

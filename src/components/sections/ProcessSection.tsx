@@ -8,21 +8,21 @@ export default function ProcessSection() {
   const steps = [
     {
       title: 'Faehrte aufnehmen',
-      subtitle: 'Das Erstgespraech',
+      subtitle: 'Erstgespraech',
       description:
-        'Ob Klinik oder Bewerber: In einem kurzen Telefonat stecken wir die Erwartungen, Qualifikationen und Ziele ab.',
+        'Kurzes Telefonat: Erwartungen, Qualifikationen, Ziele klaeren.',
     },
     {
-      title: 'Die gezielte Suche',
+      title: 'Gezielte Suche',
       subtitle: 'Matching',
       description:
-        'Wir aktivieren unser Netzwerk und nutzen moderne digitale Recruiting-Kanaele, um die passenden Gegenstuecke zu matchen.',
+        'Wir aktivieren unser Netzwerk und matchen die passenden Profile.',
     },
     {
-      title: 'Das Kennenlernen',
+      title: 'Kennenlernen',
       subtitle: 'Perfect Match',
       description:
-        'Wir bringen beide Seiten an einen Tisch. Erst wenn Sie absolut ueberzeugt sind, ist unsere Arbeit getan.',
+        'Wir bringen beide Seiten zusammen — erst wenn alles passt, ist unsere Arbeit getan.',
     },
   ];
 
