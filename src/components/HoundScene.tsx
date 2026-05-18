@@ -263,12 +263,18 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
     // mit transmission: 0.9 die richtige Wahl.
 
     // ---------- 4. Szenen-Objekte ----------
-    // HERO Sektion (Z = -2)
-    // autoCrop entfernt das transparente Padding des Logos (1024x1024 mit
-    // schmalem Text-Inhalt) und mappt nur den sichtbaren Bereich auf das Mesh.
-    // Bounding-Box [4, 4] ist gross genug, dass der gekroppte HOUND-Text in
-    // seinem natuerlichen Verhaeltnis (~5:1) gut lesbar erscheint - ohne
-    // Stretching, ohne Unschaerfe.
+    // Z-Tiefen sind auf 6 Text-Sektionen (Hero / ValueProp / Mandanten /
+    // Talente / Process / CTA) abgestimmt. Mit `targetZ = progress * 45`
+    // entspricht 1 Sektion ~ 9 Z-Einheiten in der Szene.
+    //
+    // Hero (Sek 1)           -> Logo bei z = -2
+    // ValueProp (Sek 2)      -> bewusst leer (nur Partikel, ruhiger Text-Fokus)
+    // Mandanten (Sek 3)      -> pferdearzt + vets bei z ~ -19
+    // Talente (Sek 4)        -> Jo + praxis + video bei z ~ -28
+    // Process (Sek 5)        -> bewusst leer (3 Cards uebernehmen die Visuals)
+    // CTA (Sek 6)            -> Werbeszene bei z = -45
+
+    // HERO (Sek 1): autoCrop entfernt transparentes Padding des Logos.
     const logoMesh = createImage(
       assetUrl(ASSETS.logoTransparent),
       [0, 1.2, -2],
@@ -277,34 +283,30 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
     );
     group.add(logoMesh);
 
-    // SEKTION 1: Mandanten (Z = -15) -> Drei Bilder rechts vom Text
-    // Alle Glas-Slabs durch echte Bild-Meshes ersetzt - keine leeren Rechtecke mehr.
-    // pferdearzt_stall.png ist das Hauptbild, vets.png komplementiert kleiner darunter.
+    // MANDANTEN (Sek 3): Pferdearzt-Stall als Hauptbild, vets.png darunter.
     const pferdearztMesh = createImage(
       assetUrl(ASSETS.pferdearztStall),
-      [4, 0.8, -15],
+      [4, 0.8, -19],
       [5, 3.2],
     );
     const vetsMesh = createImage(
       assetUrl(ASSETS.vets),
-      [2.8, -1.8, -16],
+      [2.8, -1.8, -20],
       [3.6, 2],
     );
     group.add(pferdearztMesh);
     group.add(vetsMesh);
 
-    // SEKTION 2: Talente (Z = -30) -> Jo (Maskottchen) + Praxis-Bild + Video
-    // Jo links, praxis.png als verbindendes Element unten, Video rechts.
-    // Glas-Slab entfernt - die drei Bilder bilden die Komposition.
-    const joMesh = createImage(assetUrl(ASSETS.jo), [-4, 0.5, -32], [4.5, 4.5]);
+    // TALENTE (Sek 4): Jo (Maskottchen) links, praxis.png unten, Video rechts.
+    const joMesh = createImage(assetUrl(ASSETS.jo), [-4, 0.5, -28], [4.5, 4.5]);
     const praxisMesh = createImage(
       assetUrl(ASSETS.praxis),
-      [0, -2.5, -31],
+      [0, -2.5, -27],
       [4, 2.2],
     );
     const videoMesh = createVideo(
       assetUrl(ASSETS.talenteVideo),
-      [3.5, 0.5, -32],
+      [3.5, 0.5, -28],
       [4.5, 3],
       0.5, // halbe Geschwindigkeit
     );
@@ -312,7 +314,7 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
     group.add(praxisMesh);
     group.add(videoMesh);
 
-    // SEKTION 3: Call to Action (Z = -45)
+    // CTA (Sek 6): Abschluss-Bild.
     const endMesh = createImage(assetUrl(ASSETS.cta), [0, 1.5, -45], [7, 4]);
     group.add(endMesh);
 
@@ -415,9 +417,9 @@ export default function HoundScene({ scrollContainerRef }: HoundSceneProps) {
       camera.position.y += (targetCameraY - camera.position.y) * 0.05;
       camera.lookAt(0, 0, -targetZ - 10);
 
-      // Lichter dynamisch durch den Tunnel
-      pointLight1.position.set(Math.sin(time) * 4, Math.cos(time) * 4, -group.position.z - 15);
-      pointLight2.position.set(Math.cos(time * 0.8) * -5, Math.sin(time * 0.8) * 3, -group.position.z - 30);
+      // Lichter trailen die drei Bild-Cluster: Mandanten (-19), Talente (-28), CTA (-45)
+      pointLight1.position.set(Math.sin(time) * 4, Math.cos(time) * 4, -group.position.z - 19);
+      pointLight2.position.set(Math.cos(time * 0.8) * -5, Math.sin(time * 0.8) * 3, -group.position.z - 28);
       pointLight3.position.set(Math.sin(time * 1.2) * 3, Math.cos(time * 1.5) * -4, -group.position.z - 45);
 
       // Schwebende Bilder & Glas
