@@ -10,7 +10,10 @@ interface TalenteSectionProps {
  */
 export default function TalenteSection({ onContactClick }: TalenteSectionProps) {
   return (
-    <section className="w-full h-screen flex items-center justify-end px-8 md:px-32 pointer-events-none">
+    <section
+      id="bewerber"
+      className="w-full h-screen flex items-center justify-end px-8 md:px-32 pointer-events-none"
+    >
       <div className="max-w-xl text-right pointer-events-auto frosted-panel p-7 md:p-9">
         <p className="text-[#D4AF37] tracking-[0.3em] uppercase text-xs mb-4 font-semibold drop-shadow-md">
           Fuer Tieraerzte &amp; TFA

@@ -15,7 +15,10 @@ interface HeroSectionProps {
  */
 export default function HeroSection({ onContactClick }: HeroSectionProps) {
   return (
-    <section className="w-full h-screen flex flex-col items-center justify-end pb-24 px-8 text-center pointer-events-none">
+    <section
+      id="hero"
+      className="w-full h-screen flex flex-col items-center justify-end pb-24 px-8 text-center pointer-events-none"
+    >
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}

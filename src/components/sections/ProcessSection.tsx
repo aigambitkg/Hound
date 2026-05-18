@@ -27,7 +27,10 @@ export default function ProcessSection() {
   ];
 
   return (
-    <section className="w-full h-screen flex flex-col items-center justify-center px-8 pointer-events-none">
+    <section
+      id="prozess"
+      className="w-full h-screen flex flex-col items-center justify-center px-8 pointer-events-none"
+    >
       <div className="pointer-events-auto max-w-5xl w-full text-center">
         <div className="inline-block frosted-panel-soft px-8 py-6 mb-12">
           <p className="text-[#D4AF37] tracking-[0.3em] uppercase text-xs mb-3 font-semibold">

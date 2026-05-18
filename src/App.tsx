@@ -3,6 +3,8 @@ import { AnimatePresence } from 'framer-motion';
 
 import HoundScene from './components/HoundScene';
 import ContactView from './components/ContactView';
+import Navigation from './components/Navigation';
+import WhatsAppButton from './components/WhatsAppButton';
 import HeroSection from './components/sections/HeroSection';
 import ValuePropositionSection from './components/sections/ValuePropositionSection';
 import MandantenSection from './components/sections/MandantenSection';
@@ -37,6 +39,9 @@ export default function App() {
       {/* 3D Canvas im Hintergrund */}
       <HoundScene scrollContainerRef={scrollRef} />
 
+      {/* Fixe Top-Navigation (Hash-Routing, Smooth-Scroll, Active-State) */}
+      <Navigation scrollContainerRef={scrollRef} />
+
       {/* Scrollbares HTML-Overlay */}
       <main
         ref={scrollRef}
@@ -50,6 +55,9 @@ export default function App() {
         <ProcessSection />
         <CTASection onContactClick={openContact} />
       </main>
+
+      {/* Floating WhatsApp-Kontakt (immer sichtbar) */}
+      <WhatsAppButton />
 
       {/* Morphing Kontakt-Overlay */}
       <AnimatePresence>

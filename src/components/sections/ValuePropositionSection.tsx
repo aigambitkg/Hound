@@ -53,7 +53,10 @@ const BRANCHEN: Branche[] = [
  */
 export default function ValuePropositionSection() {
   return (
-    <section className="w-full min-h-screen flex flex-col items-center justify-center px-8 py-20 pointer-events-none">
+    <section
+      id="branchen"
+      className="w-full min-h-screen flex flex-col items-center justify-center px-8 py-20 pointer-events-none"
+    >
       <div className="pointer-events-auto max-w-5xl w-full">
         {/* Intro */}
         <div className="frosted-panel-soft p-7 md:p-9 mb-10 text-center">
