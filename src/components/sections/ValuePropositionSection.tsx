@@ -7,7 +7,7 @@
 export default function ValuePropositionSection() {
   return (
     <section className="w-full h-screen flex flex-col items-center justify-center px-8 text-center pointer-events-none">
-      <div className="pointer-events-auto max-w-3xl">
+      <div className="pointer-events-auto max-w-3xl frosted-panel p-8 md:p-12">
         <p className="text-[#D4AF37] tracking-[0.3em] uppercase text-xs mb-4 font-semibold drop-shadow-md">
           Warum HOUND?
         </p>

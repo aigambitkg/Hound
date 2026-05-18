@@ -29,19 +29,21 @@ export default function ProcessSection() {
   return (
     <section className="w-full h-screen flex flex-col items-center justify-center px-8 pointer-events-none">
       <div className="pointer-events-auto max-w-5xl w-full text-center">
-        <p className="text-[#D4AF37] tracking-[0.3em] uppercase text-xs mb-4 font-semibold drop-shadow-md">
-          So funktioniert&apos;s
-        </p>
-        <h2 className="text-white text-4xl md:text-5xl font-serif leading-tight drop-shadow-lg mb-16">
-          In 3 Schritten zum{' '}
-          <span className="italic text-[#D4AF37]">Perfect Match</span>
-        </h2>
+        <div className="inline-block frosted-panel-soft px-8 py-6 mb-12">
+          <p className="text-[#D4AF37] tracking-[0.3em] uppercase text-xs mb-3 font-semibold">
+            So funktioniert&apos;s
+          </p>
+          <h2 className="text-white text-4xl md:text-5xl font-serif leading-tight">
+            In 3 Schritten zum{' '}
+            <span className="italic text-[#D4AF37]">Perfect Match</span>
+          </h2>
+        </div>
 
-        <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           {steps.map((step, idx) => (
             <div
               key={step.title}
-              className="relative bg-black/20 backdrop-blur-sm border border-[#D4AF37]/20 rounded-2xl p-7 text-left hover:border-[#D4AF37]/60 transition-colors"
+              className="frosted-panel p-7 text-left hover:border-[#D4AF37]/60 transition-colors"
             >
               <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#D4AF37] text-[#2B0A16] font-serif text-xl font-bold mb-5">
                 {idx + 1}

@@ -35,4 +35,31 @@
   .font-serif {
     font-family: 'Cormorant Garamond', 'Playfair Display', serif;
   }
+
+  /*
+   * Frosted-Glass-Container fuer Texte ueber der 3D-Szene.
+   * Garantiert Lesbarkeit egal welches Bild gerade vorbeischwebt.
+   * Backdrop-Filter ist GPU-beschleunigt - kostet praktisch nichts.
+   * -webkit-backdrop-filter sorgt fuer Safari-Unterstuetzung.
+   */
+  .frosted-panel {
+    background-color: rgba(43, 10, 22, 0.55);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(212, 175, 55, 0.18);
+    border-radius: 1.5rem;
+    box-shadow:
+      0 25px 50px -12px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  /* Leichtere Variante - subtiler, fuer Hero-Bereich wo wir mehr Atmosphaere wollen */
+  .frosted-panel-soft {
+    background-color: rgba(43, 10, 22, 0.35);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    backdrop-filter: blur(14px) saturate(130%);
+    border: 1px solid rgba(212, 175, 55, 0.12);
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+  }
 }

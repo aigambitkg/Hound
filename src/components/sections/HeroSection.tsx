@@ -20,7 +20,7 @@ export default function HeroSection({ onContactClick }: HeroSectionProps) {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.5, delay: 0.5 }}
-        className="pointer-events-auto max-w-4xl"
+        className="pointer-events-auto max-w-4xl frosted-panel-soft p-8 md:p-12"
       >
         <p className="text-[#D4AF37] tracking-[0.3em] uppercase text-xs md:text-sm mb-6 font-semibold drop-shadow-md">
           HOUND &nbsp;|&nbsp; Next-Level Personalberatung fuer die Tiermedizin

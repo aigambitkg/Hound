@@ -11,8 +11,8 @@ interface CTASectionProps {
 export default function CTASection({ onContactClick }: CTASectionProps) {
   return (
     <section className="w-full h-screen flex flex-col items-center justify-end pb-32 px-8 text-center pointer-events-none">
-      <div className="pointer-events-auto mt-auto">
-        <h2 className="text-white text-5xl md:text-7xl font-serif mb-8 drop-shadow-lg">
+      <div className="pointer-events-auto mt-auto frosted-panel-soft px-10 py-10">
+        <h2 className="text-white text-5xl md:text-7xl font-serif mb-8">
           Faehrte aufgenommen?
         </h2>
         <button
